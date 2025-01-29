@@ -29,8 +29,8 @@ COPY . .
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Expose port 80 to serve the application
-EXPOSE 80
+# Expose port 8000
+EXPOSE 8000
 
-# Command to start the PHP-FPM server
-CMD ["php-fpm"]
+# Command to start the PHP-FPM server (or any other web server you use)
+CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
