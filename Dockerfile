@@ -1,5 +1,5 @@
-# Use official PHP image as base image
-FROM php:8.1-fpm
+# Use PHP 8.2 image as the base image
+FROM php:8.2-fpm
 
 # Set working directory
 WORKDIR /var/www
@@ -12,8 +12,13 @@ RUN apt-get update && apt-get install -y \
     zip \
     git \
     curl \
+    libmcrypt-dev \
+    libicu-dev \
+    libxml2-dev \
+    libpng-dev \
+    libjpeg-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql
+    && docker-php-ext-install gd pdo pdo_mysql intl opcache
 
 # Install Composer (PHP dependency manager)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
