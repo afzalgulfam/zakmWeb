@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libpng-dev \
     libjpeg-dev \
+    nginx \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql intl opcache
 
@@ -29,12 +30,12 @@ COPY . .
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Configure Nginx
+# Configure Nginx (ensure the nginx config is correct)
 COPY nginx/default.conf /etc/nginx/conf.d/
 
 # Expose port 8000
 EXPOSE 80
 
-# Command to start the PHP-FPM server (or any other web server you use)
-CMD service nginx start && php-fpm
+# Run Nginx in the foreground and PHP-FPM
+CMD php-fpm & nginx -g "daemon off;"
 
