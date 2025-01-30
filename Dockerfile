@@ -29,9 +29,12 @@ COPY . .
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+# Configure Nginx
+COPY nginx/default.conf /etc/nginx/conf.d/
+
 # Expose port 8000
-EXPOSE 8000
+EXPOSE 80
 
 # Command to start the PHP-FPM server (or any other web server you use)
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD service nginx start && php-fpm
 
